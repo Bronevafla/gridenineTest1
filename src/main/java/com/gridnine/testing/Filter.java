@@ -3,12 +3,14 @@ package com.gridnine.testing;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Class containing filtering methods
  */
 public class Filter {
+    private static Logger log = Logger.getLogger(Filter.class.getName());
     private List<Flight> flightList;
 
     public Filter(List<Flight> flightList) {
@@ -23,8 +25,7 @@ public class Filter {
                 .filter(flight -> flight.getSegments().stream()
                         .allMatch(segment -> segment.getDepartureDate().isAfter(LocalDateTime.now())))
                 .collect(Collectors.toList()));
-
-        System.out.println(sortFilter.getFlightList());
+        log.info("Filter: \"departNotInPast\" \n" + sortFilter.getFlightList());
         return sortFilter;
     }
 
@@ -36,8 +37,7 @@ public class Filter {
                 .filter(flight -> flight.getSegments().stream()
                         .allMatch(segment -> segment.getArrivalDate().isAfter(segment.getDepartureDate())))
                 .collect(Collectors.toList()));
-
-        System.out.println(sortFilter.getFlightList());
+        log.info("Filter: \"ArrNotEarlierDept\" \n" + sortFilter.getFlightList());
         return sortFilter;
     }
 
@@ -63,8 +63,8 @@ public class Filter {
         }
 
         Filter sortFilter = new Filter(trueList);
-        System.out.println(sortFilter.getFlightList());
 
+        log.info("Filter: \"LessTwoHrsWait\" \n" + sortFilter.getFlightList());
         return sortFilter;
     }
 
