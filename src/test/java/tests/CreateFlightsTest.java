@@ -25,7 +25,7 @@ class CreateFlightsTest {
                         .allMatch(flight -> flight.getSegments().stream()
                                 .allMatch(segment -> segment.getDepartureDate().isAfter(LocalDateTime.now())))
                         , "Departure until the current time"),
-                () -> Assertions.assertEquals(filter.lessTwoHrsWait().getFlightList().size(), flightList.size()
+                () -> Assertions.assertEquals(filter.lessHrsWait(2).getFlightList().size(), flightList.size()
                         , "Eliminate flights with more than two hours of waiting on the ground")
 
         );

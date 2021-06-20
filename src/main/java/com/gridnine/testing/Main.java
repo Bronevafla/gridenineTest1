@@ -1,6 +1,5 @@
 package com.gridnine.testing;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Main {
@@ -9,8 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Filter filter = new Filter(FlightBuilder.createFlights());
 
-        log.info("Original flight list: " + filter);
-        filter.departNotInPast().lessTwoHrsWait().arrNotEarlierDept();
-//        log.info("Filtered flight list: " + filter.departNotInPast().lessTwoHrsWait().arrNotEarlierDept());
+        log.info("Original flight list:\n" + filter.getFlightList() + "\n");
+        filter.departNotInPast().lessHrsWait(2).arrNotEarlierDept();
     }
 }

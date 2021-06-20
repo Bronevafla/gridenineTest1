@@ -25,7 +25,8 @@ public class Filter {
                 .filter(flight -> flight.getSegments().stream()
                         .allMatch(segment -> segment.getDepartureDate().isAfter(LocalDateTime.now())))
                 .collect(Collectors.toList()));
-        log.info("Filter: \"departNotInPast\" \n" + sortFilter.getFlightList());
+
+        log.info("Filter: \"departNotInPast\" \n" + sortFilter.getFlightList() + "\n");
         return sortFilter;
     }
 
@@ -37,20 +38,21 @@ public class Filter {
                 .filter(flight -> flight.getSegments().stream()
                         .allMatch(segment -> segment.getArrivalDate().isAfter(segment.getDepartureDate())))
                 .collect(Collectors.toList()));
-        log.info("Filter: \"ArrNotEarlierDept\" \n" + sortFilter.getFlightList());
+
+        log.info("Filter: \"ArrNotEarlierDept\" \n" + sortFilter.getFlightList() + "\n");
         return sortFilter;
     }
 
     /**
-     * Eliminate flights with more than two hours of waiting on the ground
+     * Eliminate flights with more than "n" hours of waiting on the ground
      */
-    public Filter lessTwoHrsWait() {
+    public Filter lessHrsWait(int hours) {
         List<Flight> trueList = new ArrayList<>();
         for (Flight flight : flightList) {
             int count = 0;
             if (flight.getSegments().size() > 1) {
                 for (int i = 0; i < flight.getSegments().size() - 1; i++) {
-                    if (flight.getSegments().get(i).getArrivalDate().plusHours(2).isAfter(flight.getSegments().get(i + 1).getDepartureDate())) {
+                    if (flight.getSegments().get(i).getArrivalDate().plusHours(hours).isAfter(flight.getSegments().get(i + 1).getDepartureDate())) {
                         count++;
                     }
                     if (count == flight.getSegments().size() - 1) {
@@ -63,8 +65,7 @@ public class Filter {
         }
 
         Filter sortFilter = new Filter(trueList);
-
-        log.info("Filter: \"LessTwoHrsWait\" \n" + sortFilter.getFlightList());
+        log.info("Filter: \"LessHrsWait\" \n" + sortFilter.getFlightList() + "\n");
         return sortFilter;
     }
 
